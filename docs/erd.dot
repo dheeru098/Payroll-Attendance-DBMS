@@ -1,1 +1,16 @@
-
+digraph ER {
+ graph [rankdir=TB, bgcolor="white", pad=.25, nodesep=.35, ranksep=.65, splines=polyline];
+ node [shape=record, style=filled, fillcolor="#F0F5FA", color="#224466", fontname="DejaVu Sans", fontsize=10, margin=".12,.09"];
+ edge [fontname="DejaVu Sans", fontsize=9, color="#36546A", arrowhead=none, labeldistance=1.8];
+ employee [label="{EMPLOYEE|PK employee_id\l full_name, department\l email (UQ), hire_date\l login_name (UQ)\l}"];
+ attendance [label="{ATTENDANCE|PK attendance_id\l FK employee_id\l work_date, status\l check_in, check_out\l UQ employee_id + work_date\l}"];
+ leave [label="{LEAVE_REQUEST|PK leave_id\l FK employee_id\l start_date, end_date\l status, reason\l}"];
+ salary [label="{SALARY|PK/FK employee_id\l PK effective_month\l basic, allowance\l}"];
+ payroll [label="{PAYROLL|PK/FK employee_id\l PK pay_month\l FK salary_month (with employee_id)\l working_days, paid_days\l gross, tax, net (generated)\l calculated_at\l}"];
+ {rank=same; attendance; leave; salary;}
+ employee -> attendance [taillabel="1",headlabel="0..*"];
+ employee -> leave [taillabel="1",headlabel="0..*"];
+ employee -> salary [taillabel="1",headlabel="0..*"];
+ employee -> payroll [taillabel="1",headlabel="0..*",constraint=false];
+ salary -> payroll [taillabel="1",headlabel="0..*"];
+}
